@@ -217,7 +217,10 @@ func run(config *hollowNodeConfig) {
 		}
 
 		// load fake node resource capacity from yaml file
-		nc, _ := simulatorconfig.NodeConfigFromYaml(config.NodeResourceFile, config.NodeResourceName)
+		nc, err := simulatorconfig.NodeConfigFromYaml(config.NodeResourceFile, config.NodeResourceName)
+		if err != nil {
+			klog.Fatalln("Failed to parse config fileL %v", err)
+		}
 		cadvisorInterface := cadvisortest.New(config.NodeName, nc)
 		containerManager := cm.NewFakeContainerManager(nc)
 
